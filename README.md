@@ -63,7 +63,7 @@ How the WorkManager scheduler works
 -----
 To ensure compatibility back to API level 14, WorkManager chooses an appropriate way to schedule a background task depending on the device API level.
 It uses AlarmManager for API levels before 23, JobScheduler for API levels 23 and 24, and a combination of JobScheduler and Firebase JobDispatcher for API levels 25 and higher.
-<img src="mediaFiles/WorkManagerBgScheduler.png"  width="250"/>
+<img src="mediaFiles/WorkManagerBgScheduler.png"  width="894"/>
 
 WorkManager Classes
 ---
@@ -116,7 +116,7 @@ such as a Room database. Eg passing the image uri instead of image itself
      - RequiresCharging
      - DeviceIdle
      - StorageNotLow
-    <img src="mediaFiles/Constraints.png" width="250"/>
+    <img src="mediaFiles/Constraints.png" width="894"/>
     
     BackOff Criteria
     ----
