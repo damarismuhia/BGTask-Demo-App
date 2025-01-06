@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.dagger.hilt)
 }
 
 android {
@@ -36,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -51,6 +55,27 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.coil)
     implementation(libs.work.runtime.ktx)
+    // Hilt Dependency Injection
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.work)
+    ksp(libs.hilt.android.compiler)
+
+    // networking & logging
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.timber)
+
+    //security
+    //navigation
+    implementation(libs.navigation.compose)
+    implementation(libs.animation.compose)
+
+    // room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+   ksp(libs.room.compiler)
+    implementation(libs.permission.state)
 
 
 

@@ -1,10 +1,13 @@
-1. Start by declaring an intent filter for send in android manifest since we aim at Sending image to our app from a browser
+Problem Statement
+---
+* Image editing app that lets you put filters on images and upload them to the web for the world to see. 
+* You want to create a series of background tasks with some constraints that:- 
+  1. Applies the filters - sufficient battery constraint
+  2. Compresses the images - enough storage space constraint
+  3. Uploads the images - network connection constraint
 
 
-# WorkManager Classes
-- [X] Worker
-- [X] WorkRequest
-- [X] WorkManager
+
 
 Content 
 ---------------
@@ -20,3 +23,4 @@ Content
   4. saving a final copy of the image which you can view when you click the See File button.
   5. monitoring the status of the background work and update the app's UI accordingly.
 
+Hilt: https://tanyatechzone.com/2023/07/28/basics-of-dependency-injection-in-android-using-hilt-hilt-part-1/

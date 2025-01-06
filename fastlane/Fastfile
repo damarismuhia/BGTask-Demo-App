@@ -23,7 +23,7 @@ platform :android do
   desc "After successful execution of task, Push code to Github"
   after_all do
       git_add(path: "*")
-      git_commit(path: "*", message: "increment version code and name")
+      git_commit(path: "*", message: "Setting up Worker with DaggerHilt,WorkRequest")
       push_to_git_remote(local_branch: "main",
               remote: "origin",
               remote_branch: "main", tags: true)
