@@ -23,6 +23,7 @@ compose-navigation = "2.8.5"
 compose-animation = "1.7.6"
 room-version = "2.6.1"
 permission-state = "0.31.1-alpha"
+hilt-navigation = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,8 @@ animation-compose = {group = "androidx.compose.animation", name = "animation",ve
 hilt-android = {group = "com.google.dagger", name = "hilt-android", version.ref = "hilt"}
 hilt-android-compiler = {group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt"}
 hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hilt-work" }
+hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose",version.ref = "hilt-navigation" }
+
 
 # --------Networking------------------------------
 retrofit = {group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}

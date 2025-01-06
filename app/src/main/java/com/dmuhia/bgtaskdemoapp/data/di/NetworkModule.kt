@@ -1,10 +1,17 @@
 package com.dmuhia.bgtaskdemoapp.data.di
 
 import android.content.Context
+import androidx.work.WorkManager
+import com.dmuhia.bgtaskdemoapp.data.local.QuoteDao
+import com.dmuhia.bgtaskdemoapp.data.local.repository.QuoteRepository
+import com.dmuhia.bgtaskdemoapp.data.local.repository.QuoteRepositoryImpl
 import com.dmuhia.bgtaskdemoapp.data.network.LiveNetworkMonitor
 import com.dmuhia.bgtaskdemoapp.data.network.NetworkMonitor
 import com.dmuhia.bgtaskdemoapp.data.network.NetworkMonitorInterceptor
 import com.dmuhia.bgtaskdemoapp.data.network.ApiService
+import com.dmuhia.bgtaskdemoapp.data.network.repository.RemoteRepository
+import com.dmuhia.bgtaskdemoapp.data.network.repository.RemoteRepositoryImpl
+import com.google.gson.Gson
 
 import dagger.Module
 import dagger.Provides
@@ -30,7 +37,7 @@ import javax.inject.Singleton
 object NetworkModule {
     @Singleton
     @Provides
-    fun provideBaseUrl():String = "https://jsonplaceholder.typicode.com/"
+    fun provideBaseUrl():String = "https://dummyjson.com/"
 
     @Singleton
     @Provides
@@ -82,7 +89,6 @@ object NetworkModule {
     }
 
 
-    @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: String,gsonConverterFactory: GsonConverterFactory): Retrofit {
         return Retrofit.Builder()
@@ -98,10 +104,18 @@ object NetworkModule {
     }
     @Singleton
     @Provides
+    fun provideGson(): Gson {
+        return Gson()
+    }
+    @Singleton
+    @Provides
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 
-
+    @Provides
+    fun provideRemoteRepository(apiService: ApiService,quoteDao: QuoteDao):RemoteRepository {
+        return RemoteRepositoryImpl(apiService, quoteDao)
+    }
 
 }

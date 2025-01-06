@@ -13,9 +13,6 @@ import javax.inject.Inject
 class MainApplication() : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: CustomWorkerFactory
-    init {
-        appInstance = this
-    }
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setMinimumLoggingLevel(Log.INFO)
@@ -27,12 +24,7 @@ class MainApplication() : Application(), Configuration.Provider {
         if (BuildConfig.DEBUG)
             Timber.plant(Timber.DebugTree())
     }
-    companion object {
-        private var appInstance: MainApplication? = null
-        fun applicationContext(): Context? {
-            return appInstance?.applicationContext
-        }
-    }
+
 }
 
 

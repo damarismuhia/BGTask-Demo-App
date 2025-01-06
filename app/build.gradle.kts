@@ -58,6 +58,7 @@ dependencies {
     // Hilt Dependency Injection
     implementation(libs.hilt.android)
     implementation(libs.hilt.work)
+    implementation(libs.hilt.compose.navigation)
     ksp(libs.hilt.android.compiler)
 
     // networking & logging
