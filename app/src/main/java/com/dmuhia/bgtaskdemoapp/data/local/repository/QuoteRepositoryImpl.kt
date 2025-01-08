@@ -1,5 +1,6 @@
 package com.dmuhia.bgtaskdemoapp.data.local.repository
 
+import androidx.lifecycle.LiveData
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -7,6 +8,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.dmuhia.bgtaskdemoapp.data.local.QuoteDao
 import com.dmuhia.bgtaskdemoapp.data.local.QuoteEntity
@@ -21,7 +23,7 @@ class QuoteRepositoryImpl @Inject constructor(private val workManager: WorkManag
     private val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
-    override fun getQuote() {
+    override fun getQuote(){
         val oneTimeFetchWR = OneTimeWorkRequestBuilder<FetchWorker>()
             .setConstraints(constraints)
             .setBackoffCriteria(BackoffPolicy.LINEAR,15,TimeUnit.SECONDS)
@@ -31,6 +33,7 @@ class QuoteRepositoryImpl @Inject constructor(private val workManager: WorkManag
         workManager.beginWith(oneTimeFetchWR)
             .then(notificationWorkReq)
             .enqueue()
+      // return workManager.getWorkInfoByIdLiveData(oneTimeFetchWR.id)
 
     }
 

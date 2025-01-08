@@ -1,7 +1,9 @@
 package com.dmuhia.bgtaskdemoapp.presentation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkInfo
 import com.dmuhia.bgtaskdemoapp.data.domain.GetAllQuotesUseCase
 import com.dmuhia.bgtaskdemoapp.data.domain.GetQuoteUseCase
 import com.dmuhia.bgtaskdemoapp.data.domain.GetupPeriodicWorkRequestUseCase
@@ -41,9 +43,7 @@ class QuoteViewModel @Inject constructor(
     }
 
     fun fetchQuote(){
-        viewModelScope.launch {
-           quoteUseCase.invoke()
-        }
+         quoteUseCase.invoke()
     }
 }
 data class UiState(val loading:Boolean,val data: List<QuoteEntity>,val error:String?)

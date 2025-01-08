@@ -31,6 +31,7 @@ When the task -
 - [X] Doesn't need to run at a specific time.
 - [X] Has to meet constraints like battery supply,network availability before execution.
 - [X] Ref: https://android-developers.googleblog.com/2018/10/modern-background-execution-in-android.html   
+- [X] Ref: https://medium.com/@appdevinsights/when-to-use-service-and-when-to-use-workmanager-9760613ce5c2   
 
    ** Why use WorkManager? **
     -------------------------
@@ -64,6 +65,7 @@ How the WorkManager scheduler works
 To ensure compatibility back to API level 14, WorkManager chooses an appropriate way to schedule a background task depending on the device API level.
 It uses AlarmManager for API levels before 23, JobScheduler for API levels 23 and 24, and a combination of JobScheduler and Firebase JobDispatcher for API levels 25 and higher.
 <img src="mediaFiles/WorkManagerBgScheduler.png"  width="894"/>
+- https://android-developers.googleblog.com/2018/10/modern-background-execution-in-android.html
 
 WorkManager Classes
 ---
