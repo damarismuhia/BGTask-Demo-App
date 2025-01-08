@@ -23,7 +23,7 @@ platform :android do
   desc "After successful execution of task, Push code to Github"
   after_all do
       git_add(path: "*")
-      git_commit(path: "*", message: "Setting up Room DB,Fetch quote periodically, screen design to display the fetched quotes from the roomDb")
+      git_commit(path: "*", message: "Notification Worker, Chaining work request")
       push_to_git_remote(local_branch: "main",
               remote: "origin",
               remote_branch: "main", tags: true)

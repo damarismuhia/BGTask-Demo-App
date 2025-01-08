@@ -11,6 +11,7 @@ import androidx.work.WorkManager
 import com.dmuhia.bgtaskdemoapp.data.local.QuoteDao
 import com.dmuhia.bgtaskdemoapp.data.local.QuoteEntity
 import com.dmuhia.bgtaskdemoapp.data.worker.FetchWorker
+import com.dmuhia.bgtaskdemoapp.data.worker.NotificationWorker
 import com.dmuhia.bgtaskdemoapp.data.worker.PeriodicWorker
 import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.TimeUnit
@@ -25,7 +26,11 @@ class QuoteRepositoryImpl @Inject constructor(private val workManager: WorkManag
             .setConstraints(constraints)
             .setBackoffCriteria(BackoffPolicy.LINEAR,15,TimeUnit.SECONDS)
             .build()
-        workManager.enqueue(oneTimeFetchWR)
+        val notificationWorkReq = OneTimeWorkRequestBuilder<NotificationWorker>()
+            .build()
+        workManager.beginWith(oneTimeFetchWR)
+            .then(notificationWorkReq)
+            .enqueue()
 
     }
 

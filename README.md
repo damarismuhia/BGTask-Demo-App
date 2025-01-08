@@ -94,23 +94,18 @@ such as a Room database. Eg passing the image uri instead of image itself
   
    A few important points to keep in mind when working with PeriodicWorkRequest:
   ---
-   - [X] The work is run multiple times
+  1. [x] The work is run multiple times
+  2. [x] The work keeps on executing periodically until it is cancelled
+  3. [x] The first execution happens immediately after the mentioned **constraints ** are met and the next execution occurs after the mentioned **period of time**
+  4. [x] Recurring execution doesn’t begin if the constraints mentioned with that work request are not met
+  5. [x] The minimum time that needs to pass before a repeated task can be executed once again is 15 minutes
+  6. [x] The work cannot be chained with other work requests
 
-  - [X] The work keeps on executing periodically until it is cancelled
-
-  - [X] The first execution happens immediately after the mentioned **constraints ** are met and the next execution occurs after the mentioned **period of time**
-
-  - [X] Recurring execution doesn’t begin if the constraints mentioned with that work request are not met
-
-  - [X] The minimum time that needs to pass before a repeated task can be executed once again is 15 minutes 
-
-  - [X] The work cannot be chained with other work requests
-
-    WorkManager Constraints
-    ---
-  - Constraints are Predefined set of conditions that the system should satisfy before starting our work. Like the task can be battery efficient by checking it’s not running heavy tasks on the low battery case, etc.
-  - Work restrictions guarantee that work is postponed until ideal circumstances are fulfilled.
-  - WorkManager API provides the criteria listed below:
+      WorkManager Constraints
+      ---
+1. [x] Constraints are Predefined set of conditions that the system should satisfy before starting our work. Like the task can be battery efficient by checking it’s not running heavy tasks on the low battery case, etc.
+2. [x] Work restrictions guarantee that work is postponed until ideal circumstances are fulfilled.
+3. [x] WorkManager API provides the criteria listed below:
      - NetworkType
      - BatteryNotLow
      - RequiresCharging
@@ -120,13 +115,47 @@ such as a Room database. Eg passing the image uri instead of image itself
     
     BackOff Criteria
     ----
-  - It allows you to define when the work should be retried.
-  - The backoff criteria is defined by:
-    - [X] BackoffPolicy - The BackoffPolicy to use when increasing backoff time, which by default is exponential, but can be set to linear.
-    - [X] Duration, Time to wait before retrying the work, which defaults to 30 seconds.
+    [x] It allows you to define when the work should be retried.
+       1. [x] The backoff criteria is defined by:
+         - [X] BackoffPolicy - The BackoffPolicy to use when increasing backoff time, which by default is exponential, but can be set to linear.
+         - [X] Duration - Time to wait before retrying the work, which by defaults to 10 seconds.
+    
+    Unique Work
+     --
+     - Sometimes we want to schedule the same work multiple times, but when a work has already been scheduled, 
+       we want the new work to replace the existing task or simply ignore the new work. 
+     - Call WorkManager.enqueueUniqueWork()to schedule unique time work, or call WorkManager.enqueueUniquePeriodicWork()to row periodic work process uniqueness.
+    
+        ExistingWorkPolicy
+        ---
+     - ExistingWorkPolicy is the policy that should be taken when there is already a work scheduled.
+
+        - REPLACE: If a work already exists with the same name, replace it with this new work. Previous work will be stopped and deleted.
+        - KEEP: If a work already exists with the same name, do nothing. Original work will continue as it is.
+        - APPEND: append the new work to already existing work.
+        - APPEND_OR_REPLACE: If previous work failed, it’ll create a new sequence, else it behaves like APPEND.
+        - ExistingPeriodicWorkPolicy.UPDATE: If there is existing pending (uncompleted) work with the same unique name, it will be updated with the new specification.
+   
+   Chaining of Tasks:
+   ---
+   - We can chain multiple tasks in two ways.
+     1. Chaining in Series - The second worker will only execute if the first one completes successfully. 
+        You can extend this chain by adding more workers with continuation.then() 
+        Example:
+        `workManager.beginWith(oneTimeFetchWR)
+        .then(notificationWorkReq)
+        .enqueue()`
+     2. Parallel Chaining - The tasks are executed simultaneously
+        Example:
+        `.beginWith(listOf(firstWorkerRequest, secondWorkerRequest, thirdWorkerRequest))
+        .then(fourthWorkerRequest)
+        .then(fifthWorkerRequest)
+        .enqueue()`
+
 
 WorkManager
 --
+
 - **Behind the Scenes — How work runs **
 By default, WorkManager will:
 - Run your work off of the main thread.
@@ -149,6 +178,10 @@ When you enqueue your WorkRequest:
       This database is what enables WorkManager to guarantee your work will finish — if your user’s device restarts and work gets interrupted, all of the details of the work can be pulled from the database and the work can be restarted when the device boots up again.
    - [X] WorkerFactory**: A default factory that creates instances of your Workers. 
    - [X] Default Executor**: A default executor that runs your work unless you specify otherwise. This ensures that by default, your work runs synchronously and off of the main thread.
+
+- Ref: https://medium.com/@appdevinsights/work-manager-android-6ea8daad56ee - Basic Components of WorkManager
+- https://medium.com/androiddevelopers/workmanager-basics-beba51e94048 - 
+
 
 Background work
 --

@@ -12,6 +12,7 @@ import androidx.work.Data
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.dmuhia.bgtaskdemoapp.data.network.ApiService
+import com.dmuhia.bgtaskdemoapp.utils.createNotification
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber
@@ -53,29 +54,12 @@ class CustomWorker @AssistedInject constructor(
     private fun getForegroundInfo(context: Context): ForegroundInfo {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ForegroundInfo(0,
-                createNotification(context))
+                createNotification(context,"",""))
         } else {
             ForegroundInfo(0,
-                createNotification(context))
+                createNotification(context,"",""))
         }
 
     }
-    private fun createNotification(context: Context) : Notification {
-        val channelId = "main-channel-id"
-        val channelName = "main-channel-name"
-        val builder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(android.R.drawable.ic_notification_overlay)
-            .setContentTitle("Not Title")
-            .setContentText("Testing Notfication")
-            .setOngoing(false)
-            .setAutoCancel(false)
-        val notificationManager = context.getSystemService(NotificationManager::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId, channelName,NotificationManager.IMPORTANCE_DEFAULT)
-           notificationManager.createNotificationChannel(channel)
 
-        }
-        return builder.build()
-    }
 }

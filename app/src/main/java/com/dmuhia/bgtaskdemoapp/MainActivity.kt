@@ -53,7 +53,7 @@ fun Greeting(context: Context, modifier: Modifier = Modifier) {
 
             //WorkRequest - OneTime WR
             //  val workRequest = OneTimeWorkRequestBuilder<CustomWorker>()
-            val workRequest = PeriodicWorkRequestBuilder<CustomWorker>(repeatInterval = 1,
+            val workRequest = PeriodicWorkRequestBuilder<CustomWorker>(repeatInterval = 15,
                 TimeUnit.MINUTES)
                 .setInitialDelay(
                     10,

@@ -1,5 +1,9 @@
 package com.dmuhia.bgtaskdemoapp.presentation.screens
 
+import android.Manifest
+import android.Manifest.permission.POST_NOTIFICATIONS
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,14 +36,30 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.dmuhia.bgtaskdemoapp.data.mappers.getWorkRequestType
 import com.dmuhia.bgtaskdemoapp.presentation.QuoteViewModel
 import com.dmuhia.bgtaskdemoapp.utils.formatTimestampToDMY
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 
-@OptIn(ExperimentalMaterial3Api::class)
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun QuoteScreen(){
     val viewModel = hiltViewModel<QuoteViewModel>()
+    val permission = rememberPermissionState(POST_NOTIFICATIONS)
     Scaffold(topBar = {
         TopAppBar(title = { Text(text = "Quote's") }, actions = {
-            IconButton(onClick = { viewModel.fetchQuote() }) {
+            IconButton(onClick = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                    if (permission.status.isGranted) {
+                        viewModel.fetchQuote()
+                    }else{
+                        permission.launchPermissionRequest()
+                    }
+                }else{
+                    viewModel.fetchQuote()
+                }
+
+            }) {
                 Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
             }
         })

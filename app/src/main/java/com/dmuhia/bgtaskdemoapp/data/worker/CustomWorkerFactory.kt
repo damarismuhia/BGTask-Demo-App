@@ -21,6 +21,9 @@ class CustomWorkerFactory @Inject constructor(private val repo:RemoteRepository,
             }
             PeriodicWorker::class.java.name -> {
                 PeriodicWorker(appContext,workerParameters,repo,gson)
+            }
+            NotificationWorker::class.java.name -> {
+                NotificationWorker(appContext,workerParameters,gson)
             } else ->{
                 null // return null, so that the base class can delegate to the default workerFactory
             }
